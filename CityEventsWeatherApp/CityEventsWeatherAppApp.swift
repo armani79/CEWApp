@@ -2,7 +2,7 @@
 //  CityEventsWeatherAppApp.swift
 //  CityEventsWeatherApp
 //
-//  Created by Arman Mohiuddin on 11/6/25.
+//  Created by Arman Mohiuddin on 11/06/25.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 struct CityEventsWeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabViewCustom()
         }
     }
 }

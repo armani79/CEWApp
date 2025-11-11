@@ -16,6 +16,16 @@
 			path = CityEventsWeatherApp;
 			sourceTree = "<group>";
 		};
+		FCF1664C2EC37B2200ED5342 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FCF1664D2EC37B3700ED5342 /* Themes */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Themes;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +44,8 @@
 			children = (
 				FC5FA5C02EBD214100E9E828 /* CityEventsWeatherApp */,
 				FC5FA5BF2EBD214100E9E828 /* Products */,
+				FCF1664C2EC37B2200ED5342 /* Views */,
+				FCF1664D2EC37B3700ED5342 /* Themes */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +74,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				FC5FA5C02EBD214100E9E828 /* CityEventsWeatherApp */,
+				FCF1664C2EC37B2200ED5342 /* Views */,
+				FCF1664D2EC37B3700ED5342 /* Themes */,
 			);
 			name = CityEventsWeatherApp;
 			packageProductDependencies = (
