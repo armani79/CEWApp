@@ -106,9 +106,7 @@ struct ContentView: View {
       errorMessage = nil
 
       do {
-          // -----------------------------------------------------
-          // 1. Use MapKit Local Search to convert address → place
-          // -----------------------------------------------------
+
           let request = MKLocalSearch.Request()
           request.naturalLanguageQuery = city
 
@@ -121,17 +119,13 @@ struct ContentView: View {
 
           let coordinate = item.placemark.coordinate
 
-          // -----------------------------------------------------
-          // 2. Fetch weather with lat/lon from the search result
-          // -----------------------------------------------------
+
           weather = try await WeatherService.fetchWeather(
               lat: coordinate.latitude,
               lon: coordinate.longitude
           )
 
-          // -----------------------------------------------------
-          // 3. Resolve city name from MKMapItem (reverse geocode replacement)
-          // -----------------------------------------------------
+
           if let detectedCity = item.placemark.locality {
               appState.recommendationType = recommendationType(for: weather!)
           }

@@ -16,7 +16,6 @@ struct Restaurant: Identifiable, Hashable {
     let category: String
     let url: URL?
 
-    /// Determines if restaurant likely has outdoor seating
     var isOutdoorLikely: Bool {
         let lower = name.lowercased()
         let outdoorKeywords = [
@@ -26,7 +25,7 @@ struct Restaurant: Identifiable, Hashable {
         return outdoorKeywords.contains(where: { lower.contains($0) })
     }
 
-    // Required for Hashable
+    // Required for Hashable (Done with the help of Clause Sonnet 2.4)
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(name)
