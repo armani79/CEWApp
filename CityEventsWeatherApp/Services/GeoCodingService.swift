@@ -10,13 +10,16 @@ import MapKit
 
 struct GeocodingService {
     static func geocode(address: String) async throws -> CLLocationCoordinate2D {
-        guard let request = MKGeocodingRequest(addressString: address) else {
-            throw URLError(.badURL)
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = address
+
+        let search = MKLocalSearch(request: request)
+        let response = try await search.start()
+
+        guard let item = response.mapItems.first else {
+            throw NSError(domain: "No location found", code: 1)
         }
-        let mapItems = try await request.mapItems
-        guard let coordinate = mapItems.first?.placemark.coordinate else {
-            throw URLError(.cannotFindHost)
-        }
-        return coordinate
+
+        return item.placemark.coordinate
     }
 }

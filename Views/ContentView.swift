@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
-import MapKit
 import CoreLocation
+import MapKit
 
 struct ContentView: View {
+    @EnvironmentObject var appState: AppState
+
     @State private var city = ""
     @State private var weather: WeatherResponse?
     @State private var events: [Event] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
+
+
+
 
     var body: some View {
         ZStack {
@@ -101,18 +106,34 @@ struct ContentView: View {
       errorMessage = nil
 
       do {
-          // 1. Convert address → coordinates
-          let coordinate = try await GeocodingService.geocode(address: city)
+          // -----------------------------------------------------
+          // 1. Use MapKit Local Search to convert address → place
+          // -----------------------------------------------------
+          let request = MKLocalSearch.Request()
+          request.naturalLanguageQuery = city
 
-          // 2. Call weather using lat/lon
-          weather = try await WeatherService.fetchWeather(lat: coordinate.latitude, lon: coordinate.longitude)
+          let search = MKLocalSearch(request: request)
+          let response = try await search.start()
 
-          // 3. Convert lat/lon back into a real city name using Core Location reverse geocoding
-          let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-          let geocoder = CLGeocoder()
-          if let placemark = try await geocoder.reverseGeocodeLocation(location).first,
-             let detectedCity = placemark.locality, !detectedCity.isEmpty {
-              events = try await EventsService.fetchEvents(for: detectedCity)
+          guard let item = response.mapItems.first else {
+              throw NSError(domain: "No results", code: 1)
+          }
+
+          let coordinate = item.placemark.coordinate
+
+          // -----------------------------------------------------
+          // 2. Fetch weather with lat/lon from the search result
+          // -----------------------------------------------------
+          weather = try await WeatherService.fetchWeather(
+              lat: coordinate.latitude,
+              lon: coordinate.longitude
+          )
+
+          // -----------------------------------------------------
+          // 3. Resolve city name from MKMapItem (reverse geocode replacement)
+          // -----------------------------------------------------
+          if let detectedCity = item.placemark.locality {
+              appState.recommendationType = recommendationType(for: weather!)
           }
 
       } catch {
@@ -121,6 +142,21 @@ struct ContentView: View {
 
       isLoading = false
   }
+  func recommendationType(for weather: WeatherResponse) -> RecommendationType {
+      let description = weather.weather.first?.description.lowercased() ?? ""
+      let temp = weather.main.temp
+
+      if description.contains("rain") || description.contains("storm") || description.contains("snow") {
+          return .indoor
+      } else if temp >= 80 {
+          return .outdoor
+      } else if temp <= 45 {
+          return .indoor
+      } else {
+          return .both
+      }
+  }
+
 
   func activityRecommendation(for weather: WeatherResponse) -> String {
       let description = weather.weather.first?.description.lowercased() ?? ""

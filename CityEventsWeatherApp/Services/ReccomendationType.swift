@@ -5,4 +5,9 @@
 //  Created by Arman Mohiuddin on 11/11/25.
 //
 
-import Foundation
+enum RecommendationType {
+    case indoor
+    case outdoor
+    case both
+}
+

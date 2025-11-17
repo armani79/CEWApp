@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct CityEventsWeatherAppApp: App {
+    @StateObject var appState = AppState()
+
     var body: some Scene {
         WindowGroup {
             TabViewCustom()
+                .environmentObject(appState) 
         }
     }
 }

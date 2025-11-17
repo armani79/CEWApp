@@ -15,10 +15,12 @@ struct TabViewCustom: View {
                           Label("Home", systemImage: "house")
                       }
 
-                  EventsView()
-                      .tabItem {
-                          Label("Events", systemImage: "calendar")
-                      }
+      EventsView()
+          .tabItem {
+              Label("Events", systemImage: "calendar")
+          }
+
+
 
                   ResView()
                       .tabItem {

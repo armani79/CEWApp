@@ -5,4 +5,10 @@
 //  Created by Arman Mohiuddin on 11/11/25.
 //
 
-import Foundation
+import Combine
+
+class AppState: ObservableObject {
+    @Published var recommendationType: RecommendationType = .both
+}
+
+
